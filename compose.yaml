@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8 
+    container_name: register-data-base
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 22864472
+      MYSQL_DATABASE: class_register_db
+      MYSQL_USER: cr_user
+      MYSQL_PASSWORD: 162534
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql  
+
+  dart_frog:
+    image: class-register-server
+    container_name: register-server
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: class_register_db
+      DB_USER: cr_user
+      DB_PASSWORD: 162534
+    volumes:
+      - ${DATA_PATH}:/public 
+
+volumes:
+  db_data:
